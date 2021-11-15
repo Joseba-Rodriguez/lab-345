@@ -26,7 +26,7 @@ CustomLog ${APACHE_LOG_DIR}/access-PaginaWebApache.log combined
 
 </VirtualHost>
 
-
+Creamos una carpeta(Certificate) para guardar los crt csr y la key:
 
 Hay que crear claves privadas para firmar la pagina con OpenSSL:
 openssl genrsa-out nombre.key 2048
