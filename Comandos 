@@ -1,0 +1,51 @@
+Comandos para crear pagina HTTPS
+
+
+Creamos una carpeta con archivo html(Será lo que se vea en la pagina principal)
+ /var/www/PaginaWeb/index.html
+
+
+En /etc/apache2/sites-available creamos un archivo nombre.conf
+y añadimos :
+
+<VirtualHost *:443>
+ServerName 35.216.239.136    
+#ServerAlias www.PaginaWebApache.com
+
+ServerAdmin joseba20018@gmail.com
+DocumentRoot /var/www/PaginaWebApache
+
+SSLEngine on 
+SSLCertificateFile /etc/apache2/certificate/apache.crt
+SSLCertificateKeyFile /etc/apache2/certificate/apache.key
+
+
+ErrorLog ${APACHE_LOG_DIR}/error-PaginaWebApache-log
+CustomLog ${APACHE_LOG_DIR}/access-PaginaWebApache.log combined
+
+
+</VirtualHost>
+
+
+
+Hay que crear claves privadas para firmar la pagina con OpenSSL:
+openssl genrsa-out nombre.key 2048
+
+
+hay que crear un certificado para la pagina
+openssl req -new -key NombreClave -out Nombre.csr
+
+
+Con este comando podemos verificar la identidad pero solo nosotros, saltará un
+error pero servirá para nuestro pagina. Para eliminar ese ultimo error 
+necesitamos la autoridad de certificación.
+
+openssl x509 -req -days 365 -in nombre.csr -signkey nombre.key -out nombre.crt
+
+
+por último se activará en el fichero index.html los SSL que hemos puesto para
+finalizar reseteamos con service apache2 restart
+ 
+
+
+ 
